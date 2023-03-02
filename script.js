@@ -2,6 +2,9 @@ const upload = new FileUploadWithPreview.FileUploadWithPreview('myFirstImage');
 const btn = document.querySelector(".btn");
 const error = document.querySelector(".error");
 const data = document.querySelector(".data");
+const imgUrl = document.querySelector(".img-url");
+const copyBtn = document.querySelector(".btn2");
+const toolTipText = document.querySelector(".tooltiptext");
 
 const allowedExtension = [
   "image/jpeg",
@@ -56,8 +59,8 @@ btn.addEventListener("click", (e) => {
       error.style.display = "block"
     } else {
       data.style.display = "flex"
-      data.firstElementChild.innerHTML = `https://images.misterh.dev/i/${res}`
-      data.firstElementChild.href = `https://images.misterh.dev/i/${res}`
+      imgUrl.innerHTML = `https://images.misterh.dev/i/${res}`
+      imgUrl.href = `https://images.misterh.dev/i/${res}`
     }
 
     btn.disabled = false
@@ -72,3 +75,12 @@ btn.addEventListener("click", (e) => {
 function isValidFileType(type) {
   return allowedExtension.includes(type)
 }
+
+copyBtn.addEventListener("click", () => {
+  toolTipText.innerText = "Copied!"
+  navigator.clipboard.writeText(imgUrl.href)
+
+  setTimeout(() => {
+    toolTipText.innerText = "Copy Link!"
+  }, 1000)
+})
