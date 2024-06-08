@@ -14,6 +14,8 @@ const allowedExtension = [
   "image/gif"
 ]
 
+const url = "https://imagehostingbackend-2tr5xgt3ea-uc.a.run.app"
+
 btn.addEventListener("click", (e) => {
   e.preventDefault()
   const file = upload.cachedFileArray[0]
@@ -47,10 +49,18 @@ btn.addEventListener("click", (e) => {
 
 
   const sendReq = async () => {
-    const req = await fetch('https://images.misterh.dev/upload', {
+    const req = await fetch(`${url}/upload`, {
       method: "POST",
       body: formData
     });
+
+    if (!req.ok) {
+      error.innerHTML = "Error while trying to upload. Please try again!"
+      error.style.display = "block"
+      btn.disabled = false
+      btn.innerHTML = "Upload"
+      return
+    }
 
     const res = await req.text()
 
@@ -59,8 +69,8 @@ btn.addEventListener("click", (e) => {
       error.style.display = "block"
     } else {
       data.style.display = "flex"
-      imgUrl.innerHTML = `https://images.misterh.dev/i/${res}`
-      imgUrl.href = `https://images.misterh.dev/i/${res}`
+      imgUrl.innerHTML = `${url}/i/${res.replace(/"/g, "")}`
+      imgUrl.href = `${url}/i/${res.replace(/"/g, "")}`
     }
 
     btn.disabled = false
